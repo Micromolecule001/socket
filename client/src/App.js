@@ -5,27 +5,26 @@ import { useEffect, useState } from "react";
 const socket = io.connect("http://localhost:3001");
 
 function App() {
-  const [inputMessage, setInputMessage] = useState('');
-
+  const [message, setMessage] = useState('');
+  const [messageReceived, setMessageReceived] = useState('');
   const sendMessage = () => {
-    socket.emit("send_message", { message: `${inputMessage}`});
-  }
-
-  const handleMessage = (e) => {
-    setInputMessage(e.target.value);
-  }
+    socket.emit("send_message", { message: `${message}`});
+  };
 
   useEffect(() => {
-    socket.on("recive_message", (data) => {
-      alert(data.message);
-    })
-  })
+    socket.on("receive_message", (data) => {
+      setMessageReceived(data.message);
+    }, [socket]);
+  });
 
   return (
     <div className="App">
-      <input onChange={handleMessage} placeholder='Message...'/>
+      <input onChange={(e) => {setMessage(e.target.value)}} placeholder='Message...'/>
 
       <button onClick={sendMessage}> Send Message </button>
+
+      <h1> Message: { messageReceived }</h1>
+      { messageReceived }
     </div>
   );
 }
