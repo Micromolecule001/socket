@@ -13,6 +13,7 @@ function App() {
 
   useEffect(() => {
     socket.on("receive_message", (data) => {
+      console.log('OnRevieve: ', data);
       setMessageReceived(data.message);
     }, [socket]);
   });
@@ -23,7 +24,7 @@ function App() {
 
       <button onClick={sendMessage}> Send Message </button>
 
-      <h1> Message: { messageReceived }</h1>
+      <h1> Message: { messageReceived } </h1>
       { messageReceived }
     </div>
   );
